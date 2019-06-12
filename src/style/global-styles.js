@@ -15,14 +15,22 @@ body {
   font-weight: normal;
   font-size: 1.4rem;
   line-height: 17px;
-  margin: 0;
 }
 
 * {
   box-sizing: border-box;
+  margin: 0;
+}
+
+.default-margin-left {
+  margin-left: 1rem;
 }
 
 .default-margin-right {
   margin-right: 1rem;
+}
+
+.default-margin-bottom {
+  margin-bottom: 1rem;
 }
 `

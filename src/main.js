@@ -15,9 +15,12 @@ const requireComponent = require.context(
   // Регулярное выражение для определения файлов базовых компонентов
   /index.(vue|js)$/
 )
+// итерируемся по списку компонентов
 requireComponent.keys().forEach(fileName => {
+  // получаем название функции и содержимое
   Object.entries(requireComponent(fileName)).forEach(([key, component]) => {
-    Vue.component(key, component)
+    // регистрируем компонент либо по названию функции либо по названию папки
+    Vue.component(key === 'default' ? new RegExp(/\/(.*)\/index/).exec(fileName)[1] : key, component)
   })
 })
 
