@@ -18,7 +18,7 @@ export default {
       required: true
     },
     selected: {
-      type: BarProp,
+      type: Boolean,
       default: true
     }
   },
