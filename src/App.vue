@@ -1,28 +1,25 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+  <AppWrapper>
+    <ReportConstructor />
+  </AppWrapper>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import styled from 'vue-styled-components'
+import ReportConstructor from '@/Pages/ReportConstructor'
+export const AppWrapper = styled.div`
+  height: 100%;
+  padding: 45px 20px 25px;
+`
 
 export default {
   name: 'app',
   components: {
-    HelloWorld
+    ReportConstructor,
+    AppWrapper
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
 </style>
