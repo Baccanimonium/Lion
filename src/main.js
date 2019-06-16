@@ -20,7 +20,7 @@ requireComponent.keys().forEach(fileName => {
   // получаем название функции и содержимое
   Object.entries(requireComponent(fileName)).forEach(([key, component]) => {
     // регистрируем компонент либо по названию функции либо по названию папки
-    Vue.component(key === 'default' ? new RegExp(/\/(.*)\/index/).exec(fileName)[1] : key, component)
+    Vue.component(key === 'default' ? component.name : key, component)
   })
 })
 

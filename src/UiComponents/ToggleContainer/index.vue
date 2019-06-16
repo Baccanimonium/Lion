@@ -1,6 +1,6 @@
 <template>
   <ContentWrapper @click="toggleRenderSlot">
-    <BaseH5 class="default-margin-bottom default-margin-left">{{ header }}</BaseH5>
+    <BaseH5 class="mb-1 ml-1">{{ header }}</BaseH5>
     <slot v-if="shouldRenderSlot"/>
   </ContentWrapper>
 </template>

@@ -28,9 +28,6 @@ export default {
     }
   },
   computed: {
-    activTabIndicatorPosition () {
-      return { left: `${this.currentElementState.prevWidth}px`, right: `${this.currentElementState.offsetWidth}px`, width: `${this.currentElementState.clientWidth}px` }
-    },
     transitonState () {
       return { transform: `translateX(${-this.scrollPosition}px)` }
     }
@@ -60,7 +57,7 @@ export default {
       }
     },
     updateTabHeaderWidth () {
-      const { clientWidth, scrollWidth, children } = this.$refs.tabsContainer
+      const { clientWidth, scrollWidth, children } = this.$refs.tabsContainer.$el
       this.maxScrollPosition = scrollWidth - clientWidth
       this.viewWidth = clientWidth
       const { elements } = Object.values(children).reduce((acc, { clientWidth }) => {
@@ -68,8 +65,6 @@ export default {
         acc.prevWidth += clientWidth
         return acc
       }, { elements: [], prevWidth: 0 })
-      // удаляем индификатор скролла
-      elements.pop()
       this.tabHeadersState = elements
       this.currentElementState = elements[this.value] || {}
     },
@@ -106,8 +101,6 @@ export default {
     const { $slots: { default: defaultSlot = [] } } = this
     const headerTabs = this.tabHeaders.map((item, index) => {
       if (typeof item === 'object') {
-        if (item.children[0].text === 'Новый шаблон Поиска') item.children[0].text = 'Новый запрос поиска'
-        if (item.children[0].text.slice(0, 13) === 'Шаблон Поиска') item.children[0].text = item.children[0].text.replace(/Шаблон Поиска/g, 'Запрос поиска')
         item.data.on.click = this.handleChangeTab(index)
         item.data.class = {
           current: index === this.value
@@ -126,27 +119,23 @@ export default {
       }
     })
     return (
-      <div class="tabs-wrapper">
-        <div class="tabs-headers-wrapper">
-          <div
+      <TabsContainer>
+        <TabsHeaderWrapper>
+          <TabsHeadersContainer
             class="tabs-headers-container"
             style={this.transitonState}
             ref="tabsContainer"
             onWheel={this.handleHorizontalScroll}
           >
             {headerTabs}
-            <div
-              class="active-tab-indicator"
-              style={this.activTabIndicatorPosition}
-            ></div>
-          </div>
-        </div>
-        <div class="column-container tab-content-wrapper">
+          </TabsHeadersContainer>
+        </TabsHeaderWrapper>
+        <TabsContentContainer>
           <transition name={this.prevIndex > this.value ? 'Bslide' : 'slide'} mode="out-in">
             {defaultSlot[this.value] || []}
           </transition>
-        </div>
-      </div>
+        </TabsContentContainer>
+      </TabsContainer>
     )
   }
 }
@@ -157,7 +146,6 @@ export default {
     transition-property: opacity, transform;
     transition-duration: 200ms;
     transition-timing-function: cubic-bezier(.25,.8,.5,1);
-    /*transition: transform 200ms ease-in-out;*/
   }
   .Bslide-enter {
     transform: translateX(-100%);
@@ -174,57 +162,5 @@ export default {
   .slide-leave-to {
     transform: translateX(-50%);
     opacity: 0;
-  }
-  .tabs-wrapper {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    position: relative;
-    .tabs-controll {
-      cursor: pointer;
-      position: absolute;
-      top: 0;
-      height: 48px;
-      z-index: 2;
-      opacity: 0;
-      transition-property: opacity;
-      transition-timing-function: ease-in-out;
-      transition-duration: 250ms;
-      color: #000000;
-      background-color: #f5f5f5;
-      border-right: 4px;
-      &:hover {
-        opacity: 1;
-      }
-    }
-    .tabs-left-controll {
-      left: 0;
-    }
-    .tabs-right-controll {
-      right: 0;
-    }
-    .tabs-headers-wrapper {
-      overflow: hidden;
-      width: 100%;
-      height: 48px;
-      flex: 0 1 auto;
-      .tabs-headers-container {
-        position: relative;
-        display: flex;
-        white-space: nowrap;
-        transition: transform 400ms cubic-bezier(.25,.8,.5,1);
-        .active-tab-indicator {
-          transition-property: right, left;
-          transition-timing-function: cubic-bezier(.25,.8,.5,1);
-          transition-duration: 400ms;
-          position: absolute;
-          bottom: 0;
-          border-bottom: 2px solid blue;
-        }
-      }
-    }
-  }
-  .tab-content-wrapper {
-    height: calc(100% - 48px);
   }
 </style>

@@ -4,16 +4,19 @@
     v-model="activeTabIndex"
   >
     <Preview />
+    <Result />
   </Tabs>
 </template>
 
 <script>
 import Preview from './Preview'
+import Result from './Result'
 
 export default {
   name: 'ReportConstructor',
   components: {
-    Preview
+    Preview,
+    Result
   },
   data () {
     return {

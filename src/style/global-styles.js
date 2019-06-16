@@ -22,15 +22,15 @@ body {
   margin: 0;
 }
 
-.default-margin-left {
+.ml-1 {
   margin-left: 1rem;
 }
 
-.default-margin-right {
+.mr-1 {
   margin-right: 1rem;
 }
 
-.default-margin-bottom {
+.mb-1 {
   margin-bottom: 1rem;
 }
 `

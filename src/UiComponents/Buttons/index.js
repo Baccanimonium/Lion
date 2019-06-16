@@ -14,7 +14,9 @@ export const BaseButton = styled.button`
   border-radius: ${props => props.theme.borderRadius};
   font-weight: 500;
   border: 0;
-  transition: background-color ease-in-out 250ms;
+  transition-property: color, background-color;
+  transition-duration: 250ms;
+  transition-timing-function: ease-in-out;
   &:hover {
     background-color: ${props => props.theme.hoverGold};
   }

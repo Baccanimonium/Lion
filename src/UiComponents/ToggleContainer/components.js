@@ -4,6 +4,6 @@ export const ContentWrapper = styled.div`
   cursor: pointer;
   user-select: none;
   padding: 1.4rem 1rem;
-  background-color: ${props => props.theme.lightGray};
+  background-color: ${props => props.theme.mainGray};
   border-radius: ${props => props.theme.borderRadius};
 `

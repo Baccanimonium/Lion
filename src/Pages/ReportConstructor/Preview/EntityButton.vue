@@ -1,5 +1,5 @@
 <template>
-  <EntityLabel @click.stop="toggleItem">
+  <EntityLabel @click.stop="toggleItem" :selected="selected">
     {{ entity }}
   </EntityLabel>
 </template>

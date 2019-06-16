@@ -7,6 +7,8 @@ export default {
   middleGray: '#BDBDBD',
   boldGray: '#828282',
 
+  errorColor: '#fc4b6c',
+
   black: '#000000',
   white: '#FFFFFF',
   mainGold: '#CAAD62',
