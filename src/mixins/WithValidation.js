@@ -25,7 +25,7 @@ export default {
       return this.validationFailed && this.validationErrors.length > 0
     },
     isRequired () {
-      return !this.$attrs.value && this.validationRules.match('required')
+      return !this.$attrs.value && !!this.validationRules.match('required')
     }
   },
   watch: {

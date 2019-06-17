@@ -73,12 +73,21 @@
             {{entity}}
           </EntityButton>
         </SideBarContainer>
-        <BaseTextArea
-          id="formula"
-          style="min-height: 30rem"
-          :value="formPayload.formula"
+<!--        <BaseTextArea-->
+<!--          id="formula"-->
+<!--          style="min-height: 30rem"-->
+<!--          :value="formPayload.formula"-->
+<!--          @input="handleInput"-->
+<!--        />-->
+        <AutoCompleteArea
           @input="handleInput"
-        />
+          id="formula"
+          :hintValues="salesEntity"
+          :value="formPayload.formula"
+        >
+          {{formPayload.formula }}
+        </AutoCompleteArea>
+        {{ formPayload }}
       </NewEntityFormWrapper>
     </Dialogue>
   </ContentWrapper>
