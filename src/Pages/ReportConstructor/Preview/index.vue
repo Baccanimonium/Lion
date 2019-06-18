@@ -39,83 +39,29 @@
         </SelectedLabelContainer>
       </SelectedFieldsContainer>
     </ResultContainer>
-    <Dialogue
-      :dialogueParams="dialogueParams"
-      :shouldRender="shouldRenderDialogue"
+    <AddEntityForm
+      :shouldRenderDialogue="shouldRenderDialogue"
+      :entity="salesEntity"
+      hintPrefix="sales"
       @close="closeDialogue"
-      @submit="handleSubmit"
-    >
-      <NewEntityFormWrapper>
-        <InputComponent
-          id="name"
-          label="Name of entity"
-          :value="formPayload.name"
-          :validationFailed="validationFailed"
-          :validationErrors="validationErrors.name"
-          :validationRules="rules.name"
-          @input="handleInput"
-        />
-        <AlgebraicSymbolsWrapper>
-          <AlgebraicLabel class="mr-1">+</AlgebraicLabel>
-          <AlgebraicLabel class="mr-1">-</AlgebraicLabel>
-          <AlgebraicLabel class="mr-1">*</AlgebraicLabel>
-          <AlgebraicLabel>/</AlgebraicLabel>
-        </AlgebraicSymbolsWrapper>
-        <SideBarContainer>
-          <BaseH5 class="mb-1 ml-1">sales</BaseH5>
-          <EntityButton
-            v-for="(entity, index) of salesEntity"
-            :key="entity"
-            :class="{ 'mb-1': salesEntity.length - 1 !== index }"
-            :entity="entity"
-            :selected="false"
-          >
-            {{entity}}
-          </EntityButton>
-        </SideBarContainer>
-<!--        <BaseTextArea-->
-<!--          id="formula"-->
-<!--          style="min-height: 30rem"-->
-<!--          :value="formPayload.formula"-->
-<!--          @input="handleInput"-->
-<!--        />-->
-        <AutoCompleteArea
-          @input="handleInput"
-          id="formula"
-          :hintValues="salesEntity"
-          :value="formPayload.formula"
-        >
-          {{formPayload.formula }}
-        </AutoCompleteArea>
-        {{ formPayload }}
-      </NewEntityFormWrapper>
-    </Dialogue>
+    />
   </ContentWrapper>
 </template>
 
 <script>
 import { GET_ENTITY_FIELDS } from '@/Pages/ReportConstructor/module'
-import WithForm from '@/mixins/withForm'
 
 import EntityButton from './EntityButton'
+import AddEntityForm from './AddEntityForm'
 import * as components from './components'
 
 export default {
   name: 'Preview',
-  components: { ...components, EntityButton },
-  mixins: [WithForm],
+  components: { ...components, EntityButton, AddEntityForm },
   data () {
     return {
       selectedEntities: new Set(),
-      dialogueParams: {
-        title: 'add new entity',
-        submitLabel: 'save'
-      },
       shouldRenderDialogue: true,
-      rules: {
-        name: 'required',
-        formula: 'required'
-      }
     }
   },
   computed: {
