@@ -1,6 +1,8 @@
 import styled from 'vue-styled-components'
 
-export const Input = styled.input`
+const InputProps = { hasError: Boolean }
+
+export const Input = styled('input', InputProps)`
   border-radius: ${props => props.theme.borderRadius};
   border: 1px solid ${props => props.theme.middleGray};
   padding: 1rem 1.3rem;

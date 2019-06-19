@@ -24,25 +24,23 @@ export default (component) => {
       }
     },
     render (h) {
-      const { label, validationErrors, validationFailed, left, ...$props } = this.$props
+      const { label, validationErrors, submitFailed, left, ...$props } = this.$props
 
       return h(
         DefaultInputWrapper, {
           props: {
             label,
             required: this.isRequired,
-            id: this.$attrs.id,
+            hasError: this.hasError,
             validationErrors,
-            validationFailed,
-            changed: this.changed,
-            touched: this.touched
+            id: this.$attrs.id
           }
         },
         [h(component, {
-          class: {
-            'has-error': this.hasError
+          props: {
+            ...$props,
+            hasError: this.hasError
           },
-          props: $props,
           attrs: this.$attrs,
           on: {
             ...this._events,

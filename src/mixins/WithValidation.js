@@ -5,7 +5,7 @@ export default {
       type: String,
       default: ''
     },
-    validationFailed: {
+    submitFailed: {
       type: Boolean,
       default: false
     },
@@ -22,14 +22,15 @@ export default {
   },
   computed: {
     hasError () {
-      return this.validationFailed && this.validationErrors.length > 0
+      const { submitFailed, changed, touched, value, validationErrors: { length } } = this
+      return length > 0 ? (submitFailed && !changed && !value) || touched : false
     },
     isRequired () {
       return !this.$attrs.value && !!this.validationRules.match('required')
     }
   },
   watch: {
-    validationFailed (newVal) {
+    submitFailed (newVal) {
       if (newVal) {
         this.changed = false
         this.touched = true

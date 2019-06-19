@@ -10,7 +10,7 @@
         id="name"
         label="Name of entity"
         :value="formPayload.name"
-        :validationFailed="validationFailed"
+        :submitFailed="submitFailed"
         :validationErrors="validationErrors.name"
         :validationRules="rules.name"
         @input="handleInput"
@@ -21,6 +21,7 @@
           :key="s"
           :class="{ 'mr-1': index !== algebraicHints.length - 1 }"
           @click="applyHint(s)"
+          :disabled="disabledAlgebraic"
         >
           {{s}}
         </AlgebraicLabel>
@@ -33,6 +34,8 @@
           :class="{ 'mb-1': entity.length - 1 !== index }"
           :entity="entity"
           :selected="false"
+          :disabled="!disabledAlgebraic"
+          @click="applyField(entity)"
         >
           {{entity}}
         </EntityButton>
@@ -45,7 +48,6 @@
         :value="formPayload.formula"
       >
       </AutoCompleteArea>
-      {{ formPayload.formula }}
     </NewEntityFormWrapper>
   </Dialogue>
 </template>
@@ -86,7 +88,16 @@ export default {
       algebraicHints: ['+', '-', '*', '/']
     }
   },
+  computed: {
+    disabledAlgebraic () {
+      const { formula = '' } = this.formPayload
+      return formula.split(' ').length % 2 === 1
+    }
+  },
   methods: {
+    applyField (field) {
+      this.applyHint(`"${this.hintPrefix}.${field}"`)
+    },
     applyHint (hint) {
       const { formula = '' } = this.formPayload
       this.handleInput(`${formula} ${hint}`, 'formula')

@@ -20,6 +20,9 @@ export const BaseButton = styled.button`
   &:hover {
     background-color: ${props => props.theme.hoverGold};
   }
+  &:disabled {
+    cursor: not-allowed;
+  }
 `
 
 export const BaseSecondaryButton = styled(BaseButton)`

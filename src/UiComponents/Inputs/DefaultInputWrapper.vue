@@ -7,7 +7,7 @@
     </Label>
     <FieldContainer>
       <slot />
-      <ErrorContainer v-if="validationFailed || (!changed && touched)">
+      <ErrorContainer v-if="hasError">
         {{ validationErrors[0] }}
       </ErrorContainer>
     </FieldContainer>
@@ -35,10 +35,8 @@ export default {
       type: Array,
       default: () => []
     },
-    validationFailed: Boolean,
-    required: Boolean,
-    changed: Boolean,
-    touched: Boolean
+    hasError: Boolean,
+    required: Boolean
   }
 }
 </script>

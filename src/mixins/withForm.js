@@ -4,7 +4,7 @@ export default {
   data () {
     return {
       validationErrors: {},
-      validationFailed: false,
+      submitFailed: false,
       formPayload: {}
     }
   },
@@ -22,18 +22,18 @@ export default {
         onFail: this.handleSubmitFail,
         onSuccess: (values) => {
           this.validationErrors = {}
-          this.validationFailed = false
+          this.submitFailed = false
           if (submit) this.submitForm(values)
         }
       })
     },
     handleSubmitFail (e) {
-      this.validationFailed = true
+      this.submitFailed = true
       this.validationErrors = e
     },
     resetForm () {
       this.validationErrors = {}
-      this.validationFailed = false
+      this.submitFailed = false
       this.formPayload = {}
     }
   }
