@@ -4,12 +4,12 @@ import WithValidation from '@/mixins/WithValidation'
 
 export default (component) => {
   const { props } = typeof component === 'function' ? component.extendOptions : component
-
+  const { mixins = [] } = component
   return Vue.component('InputComponent', {
     mixins: [WithValidation],
     props: {
       ...props,
-      ...component.mixins.reduce((acc, { props }) => {
+      ...mixins.reduce((acc, { props }) => {
         return { ...acc, ...props }
       }, {}),
       label: {
@@ -25,23 +25,22 @@ export default (component) => {
     },
     render (h) {
       const { label, validationErrors, submitFailed, left, ...$props } = this.$props
-
       return h(
         DefaultInputWrapper, {
           props: {
             label,
-            required: this.isRequired,
             hasError: this.hasError,
+            required: this.isRequired,
             validationErrors,
             id: this.$attrs.id
           }
         },
         [h(component, {
-          props: {
-            ...$props,
+          props: $props,
+          attrs: {
+            ...this.$attrs,
             hasError: this.hasError
           },
-          attrs: this.$attrs,
           on: {
             ...this._events,
             ...this.$listeners,

@@ -1,15 +1,17 @@
 import Validator from 'validatorjs'
 import merge from 'lodash/merge'
 
+Validator.register('notEndedOnAlgebraicSign', function (value) { // requirement parameter defaults to null
+  return !/[/|*|+|-]$/.test(value)
+}, 'Значение не должно заканчиваться на математический знак операции')
+
 const messages = {
   required: 'Поле обязательно к заполнению',
   required_without: 'Поле обязательно к заполнению',
   numeric: 'Поле обязательно к заполнению',
-  afterFDate: 'Выберите любую дату после :afterFDate',
   size: 'Длина значения поля должна быть равна :size',
   min: 'Длина значения должна быть больше, чем :min',
-  max: 'Длина значения должна быть меньше, чем :max',
-  phone: 'Введите номер соовествующий формату +7 (XXX) XXX-XX-XX',
+  max: 'Длина значения должна быть меньше, чем :max'
 }
 export function getValidation (values, rules, options = {}) {
   const { onFail = () => null, onSuccess = () => null } = options

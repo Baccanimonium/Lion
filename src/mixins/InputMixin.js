@@ -1,7 +1,4 @@
 export default {
-  props: {
-    hasError: Boolean
-  },
   computed: {
     events () {
       const { input, ...event } = this._events

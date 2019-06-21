@@ -46,9 +46,8 @@ export const EntityLabel = styled(BaseButton, EntityLabelProps)`
   }
 `
 export const SelectedLabelContainer = styled.div`
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+  grid-gap: 1rem;
   padding: 1rem;
 `
-
-

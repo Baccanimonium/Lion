@@ -31,5 +31,4 @@ export const DialogueContainer = styled.div`
 export const ActionsContainer = styled.div`
   display: flex;
   justify-content: flex-end;
-  padding-top: 2rem;
 `

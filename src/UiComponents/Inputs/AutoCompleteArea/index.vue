@@ -2,6 +2,7 @@
   <HintArea>
     <textarea
       :value="value"
+      v-bind="$attrs"
       class="autocomplete-textarea"
       type="text"
       ref="inputs"
@@ -29,6 +30,7 @@
 <script>
 import getCaretCoordinates from 'textarea-caret'
 import replaceBetwen from '@/utils/stringReplaceBetween'
+import removeQuotes from '@/utils/removeQuotes'
 import * as components from './components'
 
 export default {
@@ -43,27 +45,16 @@ export default {
     value: {
       type: String,
       default: () => ''
-    },
-    hintPrefix: {
-      type: String,
-      default: () => ''
-    },
-    id: {
-      type: String,
-      required: true
     }
   },
   data () {
     return {
       off: '',
       hintLabelCords: {},
-      hits: undefined,
+      hits: undefined
     }
   },
   computed: {
-    normalizedHintsValues () {
-      return this.hintValues.map(hint => `"${this.hintPrefix}.${hint}"`)
-    },
     hintLabelStyles () {
       const { top = 0, height, left } = this.hintLabelCords
       return { top: `${height + top}px`, left: `${left}px` }
@@ -76,12 +67,12 @@ export default {
       if (/[\s]$/.test(selectionEnd === value.length ? value : value.slice(0, selectionEnd))) {
         let startIndex = value.trim().lastIndexOf(' ')
         startIndex = startIndex >= 0 ? startIndex + 1 : 0
-        const lastItem = new RegExp(value.slice(startIndex, -1).replace('"', ''), 'i')
+        const lastItem = removeQuotes(value.slice(startIndex, -1))
         this.emitNewVal(replaceBetwen(
           value,
           startIndex,
           value.length - 1,
-          this.normalizedHintsValues.find(item => lastItem.test(item)) || '' // гарантируем корректный ввод и дозаполняем кавычки
+          this.hintValues.find(item => lastItem === removeQuotes(item)) || '' // гарантируем корректный ввод и дозаполняем кавычки
         ))
         this.hits = undefined
       } else {
@@ -102,12 +93,12 @@ export default {
       this.$refs.inputs.focus()
     },
     emitNewVal (value) {
-      this.$emit('input', value, this.id)
+      this.$emit('input', value, this.$attrs.id)
     },
     HintsOptions (value, replaceIndices) {
       this.hits = value
-        ? this.normalizedHintsValues.reduce((acc, hint) => {
-          if (new RegExp(value, 'i').test(hint)) {
+        ? this.hintValues.reduce((acc, hint) => {
+          if (new RegExp(value.replace(/[\\*+-]/, `\\${value}`), 'i').test(hint)) {
             acc.push({
               replaceIndices,
               hintLabel: hint.replace(value, `<span style="font-weight: 500">${value}</span>`),

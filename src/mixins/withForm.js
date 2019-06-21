@@ -19,7 +19,7 @@ export default {
     },
     validate (values, submit) {
       getValidation(values, this.rules, {
-        onFail: this.handleSubmitFail,
+        onFail: (e) => this.handleSubmitFail(e, submit),
         onSuccess: (values) => {
           this.validationErrors = {}
           this.submitFailed = false
@@ -27,8 +27,8 @@ export default {
         }
       })
     },
-    handleSubmitFail (e) {
-      this.submitFailed = true
+    handleSubmitFail (e, submit) {
+      if (submit) this.submitFailed = true
       this.validationErrors = e
     },
     resetForm () {

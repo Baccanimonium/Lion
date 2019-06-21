@@ -7,12 +7,12 @@
   >
     <NewEntityFormWrapper>
       <InputComponent
-        id="name"
+        id="label"
         label="Name of entity"
-        :value="formPayload.name"
+        :value="formPayload.label"
         :submitFailed="submitFailed"
-        :validationErrors="validationErrors.name"
-        :validationRules="rules.name"
+        :validationErrors="validationErrors.label"
+        :validationRules="rules.label"
         @input="handleInput"
       />
       <AlgebraicSymbolsWrapper>
@@ -40,14 +40,15 @@
           {{entity}}
         </EntityButton>
       </SideBarContainer>
-      <AutoCompleteArea
+      <AutoCompleteAreaComponent
         @input="handleInput"
         id="formula"
-        :hintPrefix="hintPrefix"
-        :hintValues="entity"
+        :hintValues="disabledAlgebraic ? normalizedHintsValues : algebraicHints"
+        :submitFailed="submitFailed"
+        :validationErrors="validationErrors.formula"
         :value="formPayload.formula"
       >
-      </AutoCompleteArea>
+      </AutoCompleteAreaComponent>
     </NewEntityFormWrapper>
   </Dialogue>
 </template>
@@ -82,13 +83,21 @@ export default {
         submitLabel: 'save'
       },
       rules: {
-        name: 'required',
-        formula: 'required'
+        label: 'required',
+        formula: 'required|notEndedOnAlgebraicSign'
       },
       algebraicHints: ['+', '-', '*', '/']
     }
   },
+  watch: {
+    shouldRenderDialogue (newValue) {
+      if (!newValue) this.resetForm()
+    }
+  },
   computed: {
+    normalizedHintsValues () {
+      return this.entity.map(hint => `"${this.hintPrefix}.${hint}"`)
+    },
     disabledAlgebraic () {
       const { formula = '' } = this.formPayload
       return formula.split(' ').length % 2 === 1
@@ -99,10 +108,13 @@ export default {
       this.applyHint(`"${this.hintPrefix}.${field}"`)
     },
     applyHint (hint) {
-      const { formula = '' } = this.formPayload
-      this.handleInput(`${formula} ${hint}`, 'formula')
+      const { formula } = this.formPayload
+      this.handleInput(formula ? `${formula}${hint} ` : `${hint} `, 'formula')
+    },
+    submitForm (value) {
+      this.$emit('submit', value)
     }
-  },
+  }
 }
 </script>
 

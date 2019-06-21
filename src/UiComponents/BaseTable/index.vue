@@ -1,22 +1,43 @@
 <template>
-  <HotTable :data="data" rowHeaders="true" colHeaders="true" />
+  <HotTable
+    :settings="mergedSettings"
+    :data="data"
+  />
 </template>
 
 <script>
 import { HotTable } from '@handsontable/vue'
 export default {
   name: 'BaseTable',
+  props: {
+    options: {
+      type: Object,
+      default: () => ({})
+    },
+    data: {
+      type: Array,
+      default: () => []
+    }
+  },
   components: {
     HotTable
   },
+  computed: {
+    mergedSettings () {
+      return {
+        ...this.defaultSettings,
+        ...this.options
+      }
+    }
+  },
   data: function () {
     return {
-      data: [
-        ['', 'Ford', 'Volvo', 'Toyota', 'Honda'],
-        ['2016', 10, 11, 12, 13],
-        ['2017', 20, 11, 14, 13],
-        ['2018', 30, 15, 12, 13]
-      ]
+      containerWidth: 1000,
+      defaultSettings: {
+        licenseKey: 'non-commercial-and-evaluation',
+        colHeaders: true,
+        stretchH: 'all'
+      }
     }
   }
 }

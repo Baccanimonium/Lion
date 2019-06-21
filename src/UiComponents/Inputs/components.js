@@ -8,6 +8,9 @@ export const Input = styled('input', InputProps)`
   padding: 1rem 1.3rem;
   height: 4rem;
   width: 100%;
+  &[haserror] {
+    border-color: ${props => props.theme.errorColor};
+  }
 `
 
 export const TextArea = Input.withComponent('textarea')

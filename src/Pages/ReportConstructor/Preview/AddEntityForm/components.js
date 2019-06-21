@@ -23,5 +23,5 @@ export const AlgebraicLabel = styled(BaseButton)`
   }
 `
 export const SideBarContainer = styled(ToggleContainerWrapper)`
-  height: 100%;
+  margin-bottom: 2rem;
 `

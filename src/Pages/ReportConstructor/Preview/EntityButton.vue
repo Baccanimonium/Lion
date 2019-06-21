@@ -17,6 +17,10 @@ export default {
       type: String,
       required: true
     },
+    domain: {
+      type: String,
+      default: undefined
+    },
     selected: {
       type: Boolean,
       default: true
@@ -24,7 +28,7 @@ export default {
   },
   methods: {
     toggleItem () {
-      this.$emit('click', this.entity, this.selected)
+      this.$emit('click', this.entity, this.domain)
     }
   }
 }

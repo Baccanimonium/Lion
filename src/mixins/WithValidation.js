@@ -42,5 +42,5 @@ export default {
       this.touched = true
       this.changed = true
     }
-  },
+  }
 }

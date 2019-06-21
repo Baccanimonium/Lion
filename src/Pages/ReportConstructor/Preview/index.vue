@@ -11,9 +11,10 @@
         <EntityButton
           v-for="(entity, index) of group[1]"
           :key="entity"
+          :domain="group[0]"
           :class="{ 'mb-1': group[1].length - 1 !== index }"
           :entity="entity"
-          :selected="selectedEntities.has(entity)"
+          :selected="fieldsEntity.has(entity)"
           @click="handleSelectItem"
         >
           {{entity}}
@@ -28,10 +29,9 @@
       <SelectedFieldsContainer>
         <SelectedLabelContainer>
           <EntityButton
-            v-for="entity of selectedEntities"
-            class="mb-1 mr-1"
-            :key="entity"
-            :entity="entity"
+            v-for="entity of reportColumns"
+            :key="entity.label"
+            :entity="entity.label"
             @click="handleSelectItem"
           >
             {{entity}}
@@ -44,12 +44,13 @@
       :entity="salesEntity"
       hintPrefix="sales"
       @close="closeDialogue"
+      @submit="applyGenericField"
     />
   </ContentWrapper>
 </template>
 
 <script>
-import { GET_ENTITY_FIELDS } from '@/Pages/ReportConstructor/module'
+import { GET_ENTITY_FIELDS, GET_REPORT_COLUMNS, SET_REPORT_COLUMNS } from '@/Pages/ReportConstructor/module'
 
 import EntityButton from './EntityButton'
 import AddEntityForm from './AddEntityForm'
@@ -60,32 +61,38 @@ export default {
   components: { ...components, EntityButton, AddEntityForm },
   data () {
     return {
-      selectedEntities: new Set(),
-      shouldRenderDialogue: true,
+      shouldRenderDialogue: false
     }
   },
   computed: {
     fieldsEntity () {
       return this.$store.getters[GET_ENTITY_FIELDS]
     },
+    reportColumns: {
+      get: function () {
+        return this.$store.getters[GET_REPORT_COLUMNS]
+      },
+      set: function (value) {
+        this.$store.commit(SET_REPORT_COLUMNS, value)
+      }
+    },
     salesEntity () {
       return this.fieldsEntity.get('sales')
     }
   },
   methods: {
-    handleSelectItem (item, selected) {
-      if (selected) {
-        this.selectedEntities.delete(item)
-      } else {
-        this.selectedEntities.add(item)
-      }
-      this.selectedEntities = new Set(this.selectedEntities)
+    handleSelectItem (entityName, domain) {
+      this.reportColumns = { label: entityName, data: `${domain}.${entityName}`, domain }
     },
     openDialogue () {
       this.shouldRenderDialogue = true
     },
     closeDialogue () {
       this.shouldRenderDialogue = false
+    },
+    applyGenericField (field) {
+      this.reportColumns = field
+      this.closeDialogue()
     }
   }
 }
