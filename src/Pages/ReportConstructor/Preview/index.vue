@@ -23,8 +23,7 @@
     </SidebarWrapper>
     <ResultContainer>
       <ActionsContainer>
-        <BaseButton class="mr-1" @click="openDialogue">add</BaseButton>
-        <BaseSecondaryButton>save</BaseSecondaryButton>
+        <BaseButton @click="openDialogue">add</BaseButton>
       </ActionsContainer>
       <SelectedFieldsContainer>
         <SelectedLabelContainer>

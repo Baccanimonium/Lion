@@ -15,6 +15,7 @@ body {
   font-weight: normal;
   font-size: 1.4rem;
   line-height: 17px;
+  color: #4F4F4F;
 }
 
 * {

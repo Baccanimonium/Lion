@@ -1,6 +1,5 @@
 import styled from 'vue-styled-components'
 import { BaseButton } from '@/UiComponents/Buttons'
-import { ContentWrapper as ToggleContainerWrapper } from '@/UiComponents/ToggleContainer/components'
 
 export const ContentWrapper = styled.div`
   height: 100%;

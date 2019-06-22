@@ -12,7 +12,7 @@
 <script>
 
 export default {
-  name: 'TabsButton',
+  name: 'TabsButton'
 }
 </script>
 

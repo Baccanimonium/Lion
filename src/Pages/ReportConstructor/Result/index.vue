@@ -1,76 +1,67 @@
 <template>
   <ResultWrapper>
+    <ActionsContainer>
+      <BaseSecondaryButton @click="storageData">save</BaseSecondaryButton>
+    </ActionsContainer>
     <BaseTable
-      :options="normalizedConfig.settings"
-      :data="normalizedData"
+      :options="mergedSettings"
+      :data="data"
+      @instaciated="setTableInst"
     />
+    <ButtonsWrapper>
+      <LabeledButton @click="addRow">add row</LabeledButton>
+    </ButtonsWrapper>
   </ResultWrapper>
 </template>
 
 <script>
 import merge from 'lodash/merge'
-import { GET_REPORT_COLUMNS } from '@/Pages/ReportConstructor/module'
+import { GET_REPORT_COLUMNS, STORAGE_REPORT } from '@/Pages/ReportConstructor/module'
 import removeQuotes from '@/utils/removeQuotes'
-import { alphabet } from '@/constants'
+import stringify, { stringifyFunctionBody } from '@/utils/stringify'
+import normalizeValue from '@/utils/normalizeComputedValue'
+
 import * as components from './components'
-// columns: [{
-//   type: 'autocomplete',
-//   source: function(query, callback) {
-//     fetch('https://example.com/query?q=' + query, function(response) {
-//       callback(response.items);
-//     })
-//   }
-// }],
+import { ActionsContainer } from '../Preview/components'
 
 export default {
   name: 'Result',
-  components,
+  components: { ...components, ActionsContainer },
   data () {
     return {
-      data: [{
-        // 'location.city': 2,
-        // 'location.index': 1,
-        // 'location.street': 2,
-        // 'employees.full-name': 3,
-        // 'employees.department': 4,
-        // 'employees.position': 5,
-        // 'sales.price': 6,
-        // 'sales.quantity': 7,
-        // 'sales.vat': 8
-      }]
+      hotInstance: undefined,
+      data: [{}],
+      staticHoSettings: {
+        startRows: 1,
+        afterChange: this.afterChangeObserver
+      }
     }
   },
   computed: {
-    normalizedData () {
-      return this.data.map((values, i) => ({
-        ...values,
-        ...Object.entries(this.normalizedConfig.formula).reduce((acc, [key, value]) => {
-          acc[key] = `=${value.trim().replace(/{i}/gi, `${i + 1}`)}`
-          return acc
-        }, {})
-      }))
+    mergedSettings () {
+      return { ...this.staticHoSettings, ...this.normalizedConfig.settings }
     },
     normalizedConfig () {
-      return this.reportColumns.reduce((acc, { label, data, domain, formula }, index, arr) => {
-        acc.settings.colHeaders.push(label)
+      return this.reportColumns.reduce((acc, { label, data, domain, formula }, i) => {
+        acc.settings.colHeaders.push(label.toUpperCase())
         if (formula) {
-          const { normalizedFormula } = formula.trim().split(' ').reduce((a, f, i) => {
+          const { args, body } = formula.trim().split(' ').reduce((a, f, i) => {
+            const { args, body } = a
             if (i % 2 === 0) {
               const normalizedArgument = removeQuotes(f)
-              if (a.memoizeIndexes.has(normalizedArgument)) {
-                a.normalizedFormula = `${a.normalizedFormula} ${a.memoizeIndexes.get(normalizedArgument)}`
-              } else {
-                const symbol = `${alphabet[arr.findIndex(({ data }) => data === normalizedArgument)]}{i}`
-                a.memoizeIndexes.set(normalizedArgument, symbol)
-                a.normalizedFormula = `${a.normalizedFormula} ${symbol}`
-              }
+              const [key, subKey] = normalizedArgument.split('.')
+              if (!args.has(key)) args.set(key, new Set())
+              args.get(key).add(subKey)
+              body.push(subKey)
             } else {
-              a.normalizedFormula = `${a.normalizedFormula} ${f}`
+              body.push(f)
             }
             return a
-          }, { memoizeIndexes: new Map(), normalizedFormula: '' })
-          acc.settings.columns.push({ data: label })
-          acc.formula[label] = normalizedFormula
+          }, { args: new Map(), body: [] })
+          acc.settings.columns.push({ data: label, readOnly: true })
+          // eslint-disable-next-line no-new-func
+          acc.cbOnChanges.set(i, new Function(`{${stringify(args, true)}}`, stringifyFunctionBody(body)))
+          acc.calculatedColumnsHeaders.push(label)
         } else {
           acc.settings.columns.push({ data, type: 'text' })
           if (domain) {
@@ -81,12 +72,41 @@ export default {
         }
         return acc
       }, {
-        settings: { colHeaders: [], columns: [], dataSchema: { }, startRows: 1, formulas: true },
-        formula: {}
+        settings: { colHeaders: [], columns: [], dataSchema: { } },
+        cbOnChanges: new Map(),
+        calculatedColumnsHeaders: []
       })
     },
     reportColumns () {
       return this.$store.getters[GET_REPORT_COLUMNS]
+    }
+  },
+  methods: {
+    setTableInst (hotInstance) {
+      this.hotInstance = hotInstance
+    },
+    addRow () {
+      const { hotInstance } = this
+      hotInstance.alter('insert_row', hotInstance.countRows(), 1)
+      hotInstance.updateSettings({ height: hotInstance.view.TBODY.clientHeight + hotInstance.view.THEAD.clientHeight })
+    },
+    afterChangeObserver (args, eventName) {
+      if (eventName === 'edit') {
+        this.setDataAtCells(args.reduce((acc, [row, label]) => {
+          if (!this.normalizedConfig.calculatedColumnsHeaders.includes(label)) {
+            this.normalizedConfig.cbOnChanges.forEach((cb, key) => {
+              acc.push([row, key, normalizeValue(cb(this.hotInstance.getSourceDataAtRow(row)))])
+            }, this)
+          }
+          return acc
+        }, []))
+      }
+    },
+    setDataAtCells (data) {
+      if (data.length > 0) this.hotInstance.setDataAtCell(data)
+    },
+    storageData () {
+      this.$store.commit(STORAGE_REPORT, this.hotInstance.getSourceData())
     }
   }
 }

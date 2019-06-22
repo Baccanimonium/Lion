@@ -2,6 +2,7 @@
   <HotTable
     :settings="mergedSettings"
     :data="data"
+    ref="table"
   />
 </template>
 
@@ -30,13 +31,20 @@ export default {
       }
     }
   },
-  data: function () {
+  mounted () {
+    this.hotInstance = this.$refs.table.hotInstance
+    this.$emit('instaciated', this.hotInstance)
+  },
+  data () {
     return {
-      containerWidth: 1000,
+      hotInstance: undefined,
       defaultSettings: {
         licenseKey: 'non-commercial-and-evaluation',
         colHeaders: true,
-        stretchH: 'all'
+        stretchH: 'all',
+        height: 50,
+        preventOverflow: 'vertical',
+        bindRowsWithHeaders: 'strict'
       }
     }
   }
