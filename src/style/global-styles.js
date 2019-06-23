@@ -34,4 +34,22 @@ body {
 .mb-1 {
   margin-bottom: 1rem;
 }
+
+.scale-enter-active, .scale-leave-active {
+  transition: all .3s ease;
+}
+
+.scale-enter, .scale-leave-active {
+  opacity: 0;
+  transform: scale(0);
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: all .3s ease
+}
+
+.fade-enter, .fade-leave-active {
+  opacity: 0;
+}
+
 `

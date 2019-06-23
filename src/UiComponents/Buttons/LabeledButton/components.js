@@ -13,4 +13,5 @@ export const RoundButton = styled(BaseButton)`
   height: 4rem;
   border-radius: 50%;
   background-color: ${props => props.theme.mainGray};
+  color: ${props => props.theme.black};
 `

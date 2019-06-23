@@ -1,6 +1,6 @@
 <template>
   <Container v-on="_events">
-    <RoundButton></RoundButton>
+    <RoundButton>+</RoundButton>
     <span class="ml-1">
       <slot/>
     </span>

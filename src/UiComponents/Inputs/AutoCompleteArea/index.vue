@@ -8,17 +8,18 @@
       ref="inputs"
       style=""
       @input="handleInput"
+      @keypress.enter.prevent="selectFirstHint"
     >
     </textarea>
     <HintLabel @click="focusLastInput">
       <Hint
-        v-if="hits"
+        v-if="hints"
         :style="hintLabelStyles"
       >
         <HintItem
-          v-for="(h, index) of hits"
+          v-for="(h, index) of hints"
           :key="index"
-          :last="index === hits.length - 1"
+          :last="index === hints.length - 1"
           v-html="h.hintLabel"
           @click="applyHint(h)"
         />
@@ -29,8 +30,8 @@
 
 <script>
 import getCaretCoordinates from 'textarea-caret'
-import replaceBetwen from '@/utils/stringReplaceBetween'
-import removeQuotes from '@/utils/removeQuotes'
+import replaceBetwen from '@/utils/Formats/stringReplaceBetween'
+import removeQuotes from '@/utils/Formats/removeQuotes'
 import * as components from './components'
 
 export default {
@@ -51,7 +52,7 @@ export default {
     return {
       off: '',
       hintLabelCords: {},
-      hits: undefined
+      hints: undefined
     }
   },
   computed: {
@@ -64,17 +65,18 @@ export default {
     handleInput ({ target }) {
       const { value, selectionEnd } = target
       // проверяем есть ли пробел в конце ввода
-      if (/[\s]$/.test(selectionEnd === value.length ? value : value.slice(0, selectionEnd))) {
+      if (this.value.length < value.length && /[\s]$/.test(selectionEnd === value.length ? value : value.slice(0, selectionEnd))) {
         let startIndex = value.trim().lastIndexOf(' ')
         startIndex = startIndex >= 0 ? startIndex + 1 : 0
         const lastItem = removeQuotes(value.slice(startIndex, -1))
+        console.log(lastItem)
         this.emitNewVal(replaceBetwen(
           value,
           startIndex,
           value.length - 1,
           this.hintValues.find(item => lastItem === removeQuotes(item)) || '' // гарантируем корректный ввод и дозаполняем кавычки
         ))
-        this.hits = undefined
+        this.hints = undefined
       } else {
         this.calcInputState(target, value, selectionEnd)
       }
@@ -96,24 +98,25 @@ export default {
       this.$emit('input', value, this.$attrs.id)
     },
     HintsOptions (value, replaceIndices) {
-      this.hits = value
-        ? this.hintValues.reduce((acc, hint) => {
-          if (new RegExp(value.replace(/[\\*+-]/, `\\${value}`), 'i').test(hint)) {
-            acc.push({
-              replaceIndices,
-              hintLabel: hint.replace(value, `<span style="font-weight: 500">${value}</span>`),
-              hint
-            })
-          }
-          return acc
-        }, []).sort(({ hintLabel = '' } = {}, { hintLabel: nextItemLabel = '' } = {}) => {
-          return hintLabel.indexOf('<') > nextItemLabel.indexOf('<') ? 1 : -1
-        })
-        : undefined
+      this.hints = this.hintValues.reduce((acc, hint) => {
+        if (new RegExp(value.replace(/[\\*+-]/, `\\${value}`), 'i').test(hint)) {
+          acc.push({
+            replaceIndices,
+            hintLabel: hint.replace(value, `<span style="font-weight: 500">${value}</span>`),
+            hint
+          })
+        }
+        return acc
+      }, []).sort(({ hintLabel = '' } = {}, { hintLabel: nextItemLabel = '' } = {}) => {
+        return hintLabel.indexOf('<') > nextItemLabel.indexOf('<') ? 1 : -1
+      })
     },
     applyHint ({ replaceIndices, hint }) {
-      this.emitNewVal(replaceBetwen(this.value, ...replaceIndices, hint))
-      this.hits = undefined
+      this.emitNewVal(`${replaceBetwen(this.value, ...replaceIndices, hint)} `)
+      this.hints = undefined
+    },
+    selectFirstHint () {
+      if (this.hints) this.applyHint(this.hints[0])
     }
   }
 }

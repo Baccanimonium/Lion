@@ -17,9 +17,9 @@
 <script>
 import merge from 'lodash/merge'
 import { GET_REPORT_COLUMNS, STORAGE_REPORT } from '@/Pages/ReportConstructor/module'
-import removeQuotes from '@/utils/removeQuotes'
-import stringify, { stringifyFunctionBody } from '@/utils/stringify'
-import normalizeValue from '@/utils/normalizeComputedValue'
+import removeQuotes from '@/utils/Formats/removeQuotes'
+import stringify, { stringifyFunctionBody } from '@/utils/Formats/stringify'
+import normalizeValue from '@/utils/Formats/normalizeOutputNumber'
 
 import * as components from './components'
 import { ActionsContainer } from '../Preview/components'

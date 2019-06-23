@@ -1,29 +1,56 @@
-# liontest
+# Документация
 
-## Project setup
+## Запуск
+Установка зависимостей
 ```
 yarn install
 ```
 
-### Compiles and hot-reloads for development
+##
+### Дев сервер
+Запуск окружения разрабоки приложения
 ```
 yarn run serve
 ```
 
-### Compiles and minifies for production
+##
+### Storybook server
+Тестовое окружение, используется для документации и отрисовки компонентов в изоляции
+от остального приложения
+
 ```
-yarn run build
+storybook:serve
+```
+##
+Файловая структура
+--
+
+```
+<app root>
+  ├─ config/storybook/        # Папка с настройками стенда storybook.
+  ├─ src/               # Основная папка с кодовой базой приложения.
+  │  ├─ icons/          # Папка с иконками.
+  │  ├─ mixins/         # Интерфейсы проекта.
+  │  ├─ Pages/          # Страницы проекта.
+  │  ├─ style/          # Глобальные стили проекта
+  │  ├─ UiComponents/   # Глобальные компоненты проекта
+  │  ├─ utils/          # Стандартные функции проекта
+  │  ├─ main.js         # Точка входа — главный файл приложения.
+  │  ├─ App.vue         # Точка входа vue приложения.
+  │  ├─ store.js        # Точка входа хранилища приложения.
+  │  ├─ ...                  
+  │                 
+  ├─ ...
 ```
 
-### Run your tests
-```
-yarn run test
-```
+Файловая структура компонентов
+--
+Любой компонент реализует следующую структуру
 
-### Lints and fixes files
 ```
-yarn run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+src/
+  └─ UiComponents | Pages/
+     └─ SomeComponent/         # Папка с ресурсами компонента.
+        ├─ index.(js/vue)      # Точка входа компонента.
+        ├─ components.js       # Файл стилей компонента.
+        ├─ story.js            # Файл тестового стенда компонента.

@@ -1,16 +1,27 @@
 <template>
   <EntityLabel @click.stop="toggleItem" :selected="selected">
-    {{ entity }}
+    <EntityContentWrapper>
+      <span>{{ entity }}</span>
+      <CloseIcon
+        v-if="selected"
+        size="14"
+      />
+      <AddIconIcon
+        v-else
+        size="14"
+      />
+    </EntityContentWrapper>
   </EntityLabel>
 </template>
 
 <script>
-import { EntityLabel } from './components'
+import { EntityLabel, EntityContentWrapper } from './components'
 
 export default {
   name: 'EntityButton',
   components: {
-    EntityLabel
+    EntityLabel,
+    EntityContentWrapper
   },
   props: {
     entity: {

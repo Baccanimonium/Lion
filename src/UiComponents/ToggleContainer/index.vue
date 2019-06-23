@@ -1,7 +1,12 @@
 <template>
   <ContentWrapper @click="toggleRenderSlot">
-    <BaseH5 class="mb-1 ml-1">{{ header }}</BaseH5>
-    <slot v-if="shouldRenderSlot"/>
+    <HeaderWrapper>
+      <BaseH5 class="ml-1">{{ header }}</BaseH5>
+      <RotateWrapper :rotated="!shouldRenderSlot"><ShevronIcon/></RotateWrapper>
+    </HeaderWrapper>
+    <div ref="childrenContainer">
+      <slot v-if="shouldRenderSlot"/>
+    </div>
   </ContentWrapper>
 </template>
 
@@ -20,7 +25,8 @@ export default {
   },
   data () {
     return {
-      shouldRenderSlot: true
+      shouldRenderSlot: true,
+      containyerHeight: undefined
     }
   },
   methods: {

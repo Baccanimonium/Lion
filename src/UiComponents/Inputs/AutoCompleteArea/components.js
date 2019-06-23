@@ -32,7 +32,7 @@ const HintItemProps = { last: Boolean }
 export const HintItem = styled('button', HintItemProps)`
   cursor: pointer;
   text-align: center;
-  width: 12rem;
+  width: 14rem;
   background-color: ${props => props.theme.white};
   border: 0;
   border-bottom: ${({ last, theme: { middleGray } }) => last ? 0 : `1px solid ${middleGray}`};

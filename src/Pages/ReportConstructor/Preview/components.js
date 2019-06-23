@@ -44,6 +44,13 @@ export const EntityLabel = styled(BaseButton, EntityLabelProps)`
     color: ${props => props.theme.white};
   }
 `
+
+export const EntityContentWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+`
 export const SelectedLabelContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));

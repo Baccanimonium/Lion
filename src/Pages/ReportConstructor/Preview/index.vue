@@ -14,7 +14,7 @@
           :domain="group[0]"
           :class="{ 'mb-1': group[1].length - 1 !== index }"
           :entity="entity"
-          :selected="fieldsEntity.has(entity)"
+          :selected="isEntitySelected(entity)"
           @click="handleSelectItem"
         >
           {{entity}}
@@ -92,6 +92,9 @@ export default {
     applyGenericField (field) {
       this.reportColumns = field
       this.closeDialogue()
+    },
+    isEntitySelected (entity) {
+      return this.reportColumns.findIndex(({ label }) => label === entity) >= 0
     }
   }
 }

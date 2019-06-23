@@ -2,10 +2,16 @@ import 'normalize.css'
 import './style/fonts.css'
 import './style/global-styles'
 import Vue from 'vue'
+import { ThemeProvider } from 'vue-styled-components'
+
 import App from './App.vue'
 import store from './store'
-import { ThemeProvider } from 'vue-styled-components'
 import theme from './style/theme'
+
+import Icon from '@/UiComponents/Icon'
+import { Close } from '@/icons/Close'
+import { AddIcon } from '@/icons/AddIcon'
+import { Shevron } from '@/icons/Shevron'
 
 const requireComponent = require.context(
   // Относительный путь до каталога компонентов
@@ -23,6 +29,10 @@ requireComponent.keys().forEach(fileName => {
     Vue.component(key === 'default' ? component.name : key, component)
   })
 })
+
+Vue.component('CloseIcon', Icon(Close))
+Vue.component('AddIconIcon', Icon(AddIcon))
+Vue.component('ShevronIcon', Icon(Shevron))
 
 Vue.config.productionTip = false
 

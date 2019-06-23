@@ -3,9 +3,12 @@
     <DialoueWrapper v-if="shouldRender">
       <DialogueArea @click="closeDialogue"/>
       <DialogueContainer :style="dialogueStyles">
-        <BaseH5 class="mb-1">
-          {{ dialogueParams.title }}
-        </BaseH5>
+        <DialogueHeaderContainer>
+          <BaseH5>
+            {{ dialogueParams.title }}
+          </BaseH5>
+          <CloseIcon size="14" @click="closeDialogue" />
+        </DialogueHeaderContainer>
         <slot/>
         <ActionsContainer v-if="dialogueParams.submitLabel">
           <BaseSecondaryButton @click="submitDialogue">
