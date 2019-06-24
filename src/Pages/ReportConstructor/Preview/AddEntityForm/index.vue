@@ -34,6 +34,7 @@
           :class="{ 'mb-1': entity.length - 1 !== index }"
           :entity="entity"
           :selected="false"
+          :renderIcon="false"
           :disabled="!disabledAlgebraic"
           @click="applyField(entity)"
         >

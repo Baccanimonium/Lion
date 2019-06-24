@@ -3,11 +3,11 @@
     <EntityContentWrapper>
       <span>{{ entity }}</span>
       <CloseIcon
-        v-if="selected"
+        v-if="selected && renderIcon"
         size="14"
       />
       <AddIconIcon
-        v-else
+        v-else-if="!selected && renderIcon"
         size="14"
       />
     </EntityContentWrapper>
@@ -33,6 +33,10 @@ export default {
       default: undefined
     },
     selected: {
+      type: Boolean,
+      default: true
+    },
+    renderIcon: {
       type: Boolean,
       default: true
     }
