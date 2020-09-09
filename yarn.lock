@@ -2670,7 +2670,7 @@ callsites@^3.0.0:
   version "3.1.0"
   resolved "https://registry.npm.taobao.org/callsites/download/callsites-3.1.0.tgz#b3630abd8943432f54b3f0519238e33cd7df2f73"
 
-camel-case@3.0.x, camel-case@^3.0.0:
+camel-case@3.0.x:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/camel-case/-/camel-case-3.0.0.tgz#ca3c3688a4e9cf3a4cda777dc4dcbc713249cf73"
   dependencies:
@@ -4134,9 +4134,13 @@ event-pubsub@4.3.0:
   version "4.3.0"
   resolved "https://registry.npm.taobao.org/event-pubsub/download/event-pubsub-4.3.0.tgz#f68d816bc29f1ec02c539dc58c8dd40ce72cb36e"
 
-eventemitter3@^3.0.0, eventemitter3@^3.1.0:
+eventemitter3@^3.1.0:
   version "3.1.2"
   resolved "https://registry.npm.taobao.org/eventemitter3/download/eventemitter3-3.1.2.tgz#2d3d48f9c346698fce83a85d7d664e98535df6e7"
+
+eventemitter3@^4.0.0:
+  version "4.0.7"
+  resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-4.0.7.tgz#2de9b68f6528d5644ef5c59526a1b4a07306169f"
 
 events@^3.0.0:
   version "3.0.0"
@@ -4518,10 +4522,8 @@ focus-lock@^0.6.3:
   resolved "https://registry.npm.taobao.org/focus-lock/download/focus-lock-0.6.5.tgz#f6eb37832a9b1b205406175f5277396a28c0fce1"
 
 follow-redirects@^1.0.0:
-  version "1.7.0"
-  resolved "https://registry.npm.taobao.org/follow-redirects/download/follow-redirects-1.7.0.tgz#489ebc198dc0e7f64167bd23b03c4c19b5784c76"
-  dependencies:
-    debug "^3.2.6"
+  version "1.13.0"
+  resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.13.0.tgz#b42e8d93a2a7eea5ed88633676d6597bc8e384db"
 
 for-in@^1.0.2:
   version "1.0.2"
@@ -5098,10 +5100,10 @@ http-proxy-middleware@^0.19.1:
     micromatch "^3.1.10"
 
 http-proxy@^1.17.0:
-  version "1.17.0"
-  resolved "https://registry.npm.taobao.org/http-proxy/download/http-proxy-1.17.0.tgz#7ad38494658f84605e2f6db4436df410f4e5be9a"
+  version "1.18.1"
+  resolved "https://registry.yarnpkg.com/http-proxy/-/http-proxy-1.18.1.tgz#401541f0534884bbf95260334e72f88ee3976549"
   dependencies:
-    eventemitter3 "^3.0.0"
+    eventemitter3 "^4.0.0"
     follow-redirects "^1.0.0"
     requires-port "^1.0.0"
 
@@ -6015,23 +6017,12 @@ map-visit@^1.0.0:
   dependencies:
     object-visit "^1.0.0"
 
-markdown-loader@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/markdown-loader/-/markdown-loader-5.0.0.tgz#d6af0f2d5fe7713fb692cbd85b547ff0ef26baa8"
-  dependencies:
-    loader-utils "^1.2.3"
-    marked "^0.6.0"
-
 markdown-to-jsx@^6.9.1, markdown-to-jsx@^6.9.3:
   version "6.10.2"
   resolved "https://registry.npm.taobao.org/markdown-to-jsx/download/markdown-to-jsx-6.10.2.tgz#644f602b81d088f10aef1c3674874876146cf38b"
   dependencies:
     prop-types "^15.6.2"
     unquote "^1.1.0"
-
-marked@^0.6.0:
-  version "0.6.2"
-  resolved "https://registry.yarnpkg.com/marked/-/marked-0.6.2.tgz#c574be8b545a8b48641456ca1dbe0e37b6dccc1a"
 
 material-colors@^1.2.1:
   version "1.2.6"
@@ -7668,13 +7659,6 @@ react-hotkeys@2.0.0-pre4:
   dependencies:
     prop-types "^15.6.1"
 
-react-icons-kit@^1.3.1:
-  version "1.3.1"
-  resolved "https://registry.yarnpkg.com/react-icons-kit/-/react-icons-kit-1.3.1.tgz#fbe56ce4379fc4391b4c6dfc1aa96e2b31e23623"
-  dependencies:
-    camel-case "^3.0.0"
-    prop-types "^15.5.8"
-
 react-input-autosize@^2.2.1:
   version "2.2.1"
   resolved "https://registry.npm.taobao.org/react-input-autosize/download/react-input-autosize-2.2.1.tgz#ec428fa15b1592994fb5f9aa15bb1eb6baf420f8"
@@ -8039,7 +8023,7 @@ require-uncached@^1.0.3:
 
 requires-port@^1.0.0:
   version "1.0.0"
-  resolved "https://registry.npm.taobao.org/requires-port/download/requires-port-1.0.0.tgz#925d2601d39ac485e091cf0da5c6e694dc3dcaff"
+  resolved "https://registry.yarnpkg.com/requires-port/-/requires-port-1.0.0.tgz#925d2601d39ac485e091cf0da5c6e694dc3dcaff"
 
 reselect@^3.0.1:
   version "3.0.1"
